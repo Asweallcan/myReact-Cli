@@ -1,15 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Index from "./pages/index";
-import Admin from "./pages/admin";
-import Hello from "./pages/hello";
+// 国际化必须引入
+import i18n from "./i18next";
+import Test from "./pages/test";
 
-ReactDOM.render(
-  <div>
-    wocaonima
-    <Index />
-    <Admin />
-    <Hello />
-  </div>,
-  document.getElementById("app")
-);
+ReactDOM.render(<Test />, document.getElementById("app"));

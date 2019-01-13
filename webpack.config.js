@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserWebpackPlugin = require("terser-webpack-plugin");
 const ExtractTextWebpackPlugin = require("extract-text-webpack-plugin");
 const StylelintWebpackPlugin = require("stylelint-webpack-plugin");
+// const CleanWebpackPlugin = require("clean-webpack-plugin");
 const env = process.env.NODE_ENV === "production" ? "production" : "development";
 
 module.exports = {
@@ -91,6 +92,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "src/index.html"),
+      filename: "index.html",
       hash: true,
       minify: {
         caseSensitive: false,
@@ -113,6 +115,13 @@ module.exports = {
       fix: true
     }),
     new webpack.ProgressPlugin(percentage => console.info(percentage))
+    /*
+    清理dist文件
+      new CleanWebpackPlugin(["dist/js", "dist/index.html"], {
+      root: path.resolve(__dirname),
+      dry: false
+    })
+     */
   ],
   optimization: {
     minimizer: [
@@ -149,7 +158,7 @@ module.exports = {
     hot: true,
     inline: true,
     historyApiFallback: true,
-    publicPath: "/dist",
+    publicPath: "/",
     open: true,
     contentBase: path.resolve(__dirname, "dist")
   }

@@ -11,7 +11,8 @@
     "eqeqeq": "error",
     "semi": "error",
     "no-unused-vars": "off",
-    "react/jsx-filename-extension": "off"
+    "react/jsx-filename-extension": "off",
+    "no-console": "off"
   },
   "parserOptions": {
     "ecmaFeatures": {
