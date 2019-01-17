@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserWebpackPlugin = require("terser-webpack-plugin");
 const ExtractTextWebpackPlugin = require("extract-text-webpack-plugin");
 const StylelintWebpackPlugin = require("stylelint-webpack-plugin");
+const UglifyjsPlugin = require("uglifyjs-webpack-plugin");
 // const CleanWebpackPlugin = require("clean-webpack-plugin");
 const env = process.env.NODE_ENV === "production" ? "production" : "development";
 
@@ -11,13 +12,13 @@ module.exports = {
   mode: env,
   devtool: false,
   entry: {
-    index: path.resolve(__dirname, "src/index.js"),
-    vendor: ["react", "react-dom"]
+    index: path.resolve(__dirname, "src/index.js")
   },
   output: {
     publicPath: "/",
     path: path.resolve(__dirname, "dist"),
-    filename: "js/[name].[hash].bundle.js"
+    filename: "js/[name].bundle.js",
+    chunkFilename: "js/[name].bundle.js"
   },
   resolve: {
     extensions: [".js", ".json", ".jsx", ".tsx", ".ts"]
@@ -113,6 +114,10 @@ module.exports = {
       failOnError: false,
       quiet: true,
       fix: true
+    }),
+    new webpack.DefinePlugin({
+      // 把引入的React切换到产品版本
+      "process.env.NODE_ENV": '"production"'
     })
     /*
     清理dist文件
@@ -124,31 +129,21 @@ module.exports = {
   ],
   optimization: {
     minimizer: [
-      new TerserWebpackPlugin({
+      new UglifyjsPlugin({
         parallel: true,
-        sourceMap: true
+        sourceMap: true,
+        uglifyOptions: {
+          output: {
+            comments: false
+          }
+        }
       })
     ],
     runtimeChunk: {
       name: "manifest"
     },
     splitChunks: {
-      cacheGroups: {
-        common: {
-          chunks: "initial",
-          name: "common",
-          minChunks: 2,
-          maxInitialRequests: 5,
-          minSize: 0
-        },
-        vendor: {
-          test: /node_modules/,
-          chunks: "initial",
-          name: "vendor",
-          priority: 10,
-          enforce: true
-        }
-      }
+      chunks: "all"
     }
   },
   devServer: {

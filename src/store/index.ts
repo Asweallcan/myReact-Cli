@@ -8,7 +8,7 @@ const epicMiddleware = createEpicMiddleware();
 const reduxDevToolsExtension = (window as any).__REDUX_DEVTOOLS_EXTENSION__;
 let store: Store;
 
-if (!reduxDevToolsExtension) {
+if (!(reduxDevToolsExtension || process.env.NODE_ENV === "development")) {
   store = createStore(rootReducer, applyMiddleware(epicMiddleware, logger));
 } else {
   store = createStore(
