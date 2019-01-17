@@ -12,7 +12,8 @@
     "semi": "error",
     "no-unused-vars": "off",
     "react/jsx-filename-extension": "off",
-    "no-console": "off"
+    "no-console": "off",
+    "max-len": "off"
   },
   "parserOptions": {
     "ecmaFeatures": {

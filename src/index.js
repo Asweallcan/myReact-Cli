@@ -1,7 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
-// 国际化必须引入
+import { Provider } from "react-redux";
+import store from "./store";
+// 国际化必须引入 这行不能去掉
 import i18n from "./i18next";
 import Test from "./pages/test";
 
-ReactDOM.render(<Test />, document.getElementById("app"));
+ReactDOM.render(
+  <Provider store={store}>
+    <Test />
+  </Provider>,
+  document.getElementById("app")
+);

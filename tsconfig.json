@@ -4,7 +4,8 @@
     "target": "es5",
     "jsx": "react",
     "allowJs": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "lib": ["dom", "scripthost", "esnext"]
   },
   "exclude": ["node_modules"]
 }

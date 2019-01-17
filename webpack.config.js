@@ -113,8 +113,7 @@ module.exports = {
       failOnError: false,
       quiet: true,
       fix: true
-    }),
-    new webpack.ProgressPlugin(percentage => console.info(percentage))
+    })
     /*
     清理dist文件
       new CleanWebpackPlugin(["dist/js", "dist/index.html"], {
@@ -160,6 +159,14 @@ module.exports = {
     historyApiFallback: true,
     publicPath: "/",
     open: true,
-    contentBase: path.resolve(__dirname, "dist")
+    contentBase: path.resolve(__dirname, "dist"),
+    compress: true,
+    progress: true,
+    proxy: {
+      "/api/*": {
+        target: "http://localhost:8888",
+        changeOrigin: true
+      }
+    }
   }
 };

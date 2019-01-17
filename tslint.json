@@ -1,4 +1,9 @@
 {
   "extends": ["tslint:recommended", "tslint-eslint-rules"],
-  "rules": {}
+  "rules": {
+    "max-line-length": false,
+    "prefer-const": false,
+    "no-console": false,
+    "interface-name": false
+  }
 }
