@@ -4,6 +4,7 @@
     "max-line-length": false,
     "prefer-const": false,
     "no-console": false,
-    "interface-name": false
+    "interface-name": false,
+    "ordered-imports": false
   }
 }

@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "ESNext",
     "target": "es5",
     "jsx": "react",
+    "moduleResolution": "node",
     "allowJs": true,
+    "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "lib": ["dom", "scripthost", "esnext"]
-  },
-  "exclude": ["node_modules"]
+  }
 }

@@ -5,6 +5,7 @@ import { Dispatch } from "redux";
 import { actionsMap as httpActions } from "../../store/actions/http";
 import { IHttpResponse } from "../../store/model";
 import { IStoreState } from "../../store/model/store";
+import { Button } from "antd";
 
 interface IStateProps {
   getTest: IHttpResponse;
@@ -40,6 +41,6 @@ export default class TestComponent extends React.PureComponent {
   public render() {
     // i18next国际化实例
     const { t } = this.props;
-    return <span>{t("test")}</span>;
+    return <Button>{t("test")}</Button>;
   }
 }

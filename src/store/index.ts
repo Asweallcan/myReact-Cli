@@ -1,24 +1,13 @@
-import { applyMiddleware, compose, createStore, Store } from "redux";
+import { applyMiddleware, createStore, Store } from "redux";
 import logger from "redux-logger";
 import { createEpicMiddleware } from "redux-observable";
 import rootEpic from "./epics";
 import rootReducer from "./reducers";
 
 const epicMiddleware = createEpicMiddleware();
-const reduxDevToolsExtension = (window as any).__REDUX_DEVTOOLS_EXTENSION__;
 let store: Store;
 
-if (!(reduxDevToolsExtension || process.env.NODE_ENV === "development")) {
-  store = createStore(rootReducer, applyMiddleware(epicMiddleware, logger));
-} else {
-  store = createStore(
-    rootReducer,
-    compose(
-      applyMiddleware(epicMiddleware, logger),
-      reduxDevToolsExtension && reduxDevToolsExtension(),
-    ),
-  );
-}
+store = createStore(rootReducer, applyMiddleware(epicMiddleware, logger));
 
 epicMiddleware.run(rootEpic);
 

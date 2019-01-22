@@ -6,7 +6,7 @@ import {
   IHttpRequest,
   IHttpResponse,
   IReducerActionsMap,
-} from "../model";
+} from "../models";
 
 // 用来直接进行http请求的函数map
 const actionsMap: IActionsMap = {};
