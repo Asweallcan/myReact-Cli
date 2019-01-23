@@ -23,15 +23,22 @@ module.exports = Object.assign({}, baseConfig, {
     ...baseConfig.plugins,
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": '"production"'
-    }),
-    new UglifyjsPlugin({
-      parallel: 4,
-      sourceMap: true,
-      uglifyOptions: {
-        output: {
-          comments: false
-        }
-      }
     })
-  ]
+  ],
+  optimization: {
+    minimizer: [
+      new UglifyjsPlugin({
+        parallel: 4,
+        sourceMap: true,
+        uglifyOptions: {
+          output: {
+            comments: false
+          }
+        }
+      })
+    ],
+    splitChunks: {
+      chunks: "all"
+    }
+  }
 });
