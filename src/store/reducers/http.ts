@@ -8,6 +8,7 @@ let actionsMap: IReducerActionsMap = {};
 Object.keys(httpResponse).forEach((key: string) => {
   actionsMap = Object.assign({}, actionsMap, {
     [key.toUpperCase()]: (state: IStoreState, action: AnyAction) => ({
+      ...state,
       [key]: action.payload,
     }),
   });

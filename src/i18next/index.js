@@ -16,7 +16,7 @@ i18n
       en: {
         translation: translation_EN
       },
-      cn: {
+      ["zh-CN"]: {
         translation: translation_CN
       }
     }

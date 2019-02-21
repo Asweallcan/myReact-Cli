@@ -1,25 +1,24 @@
-import { AxiosResponse } from "axios";
 import { Action } from "redux";
 
-type IPromiseFunc = (params: IHttpRequest) => Promise<void>;
+declare const Methods: ["get", "post", "put", "delete"];
+type Method = (typeof Methods)[number];
 
-type IActionFunc = (payload?: any) => Action<any>;
-
-export interface IHttpRequest {
+export interface IHttpRequest<T = {}> {
   url: string;
-  method: string;
-  data: object;
+  method: Method;
+  data?: T;
+  params?: T;
 }
 
-export interface IHttpResponse {
+export interface IHttpResponse<T = {}> {
   status: number;
   statusText: string;
-  data: object;
+  data: T;
 }
 
-export interface IHttpResponseState {
-  getTest?: AxiosResponse;
-}
+type IPromiseFunc<T = {}> = (params: IHttpRequest<T>) => Promise<void>;
+
+type IActionFunc = (payload?: IHttpResponse) => Action<any>;
 
 export interface IActionsMap {
   getTest?: IPromiseFunc;
@@ -27,4 +26,8 @@ export interface IActionsMap {
 
 export interface IReducerActionsMap {
   getTest?: IActionFunc;
+}
+
+export interface IHttpResponseState {
+  getTest?: IHttpResponse;
 }

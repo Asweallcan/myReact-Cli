@@ -3,14 +3,29 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextWebpackPlugin = require("extract-text-webpack-plugin");
 const StylelintWebpackPlugin = require("stylelint-webpack-plugin");
+const FirendlyErrorePlugin = require("friendly-errors-webpack-plugin");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
 
 module.exports = {
+  entry: {
+    index: path.resolve(__dirname, "../src/index.js"),
+    rxjs: ["rxjs", "redux-observable"],
+    redux: ["redux", "react-redux", "redux-logger"],
+    react: ["react", "react-dom", "react-router-dom"],
+    i18n: ["i18next", "react-i18next", "i18next-xhr-backend", "i18next-browser-languagedetector"]
+  },
   output: {
     publicPath: "/",
     path: path.resolve(__dirname, "../dist"),
     filename: "js/[name].js"
   },
   plugins: [
+    new CleanWebpackPlugin(["dist"], {
+      root: path.resolve(__dirname, "../"),
+      dry: false,
+      beforeEmit: true
+    }),
+    new FirendlyErrorePlugin(),
     new webpack.WatchIgnorePlugin([/css.d.ts$/]),
     new StylelintWebpackPlugin({
       context: "src",
@@ -103,7 +118,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.scss$/,
+        test: /\.s?css$/,
         exclude: /node_modules/,
         use: ExtractTextWebpackPlugin.extract({
           fallback: "style-loader",
@@ -168,23 +183,5 @@ module.exports = {
   },
   performance: {
     hints: false
-  },
-  devServer: {
-    host: "localhost",
-    port: 8088,
-    hot: true,
-    inline: true,
-    historyApiFallback: true,
-    publicPath: "/",
-    open: true,
-    contentBase: path.resolve(__dirname, "../dist"),
-    compress: true,
-    progress: true,
-    proxy: {
-      "/api/*": {
-        target: "http://localhost:8888",
-        changeOrigin: true
-      }
-    }
   }
 };
