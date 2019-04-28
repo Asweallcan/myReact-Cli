@@ -5,7 +5,7 @@ import { Loading } from "./components";
 
 const Test = Loadable({
   loading: Loading,
-  loader: () => import("./pages/test"),
+  loader: () => import("./pages/Test"),
 });
 
 export default () => (

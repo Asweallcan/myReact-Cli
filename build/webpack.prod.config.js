@@ -1,5 +1,4 @@
 const webpack = require("webpack");
-const path = require("path");
 const UglifyjsPlugin = require("uglifyjs-webpack-plugin");
 const baseConfig = require("./webpack.base.config.js");
 
@@ -12,6 +11,13 @@ module.exports = Object.assign({}, baseConfig, {
       "process.env.NODE_ENV": '"production"'
     })
   ],
+  externals: {
+    "@babel/polyfill": {},
+    react: "React",
+    "react-dom": "ReactDOM",
+    redux: "Redux",
+    "react-redux": "ReactRedux"
+  },
   optimization: {
     minimizer: [
       new UglifyjsPlugin({
