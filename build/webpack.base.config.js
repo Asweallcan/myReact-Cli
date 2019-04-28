@@ -8,11 +8,7 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 
 module.exports = {
   entry: {
-    index: path.resolve(__dirname, "../src/index.js"),
-    rxjs: ["rxjs", "redux-observable"],
-    redux: ["redux", "react-redux", "redux-logger"],
-    react: ["react", "react-dom", "react-router-dom"],
-    i18n: ["i18next", "react-i18next", "i18next-xhr-backend", "i18next-browser-languagedetector"]
+    index: path.resolve(__dirname, "../src/index.js")
   },
   output: {
     publicPath: "/",
@@ -26,7 +22,6 @@ module.exports = {
       beforeEmit: true
     }),
     new FirendlyErrorePlugin(),
-    new webpack.WatchIgnorePlugin([/css.d.ts$/]),
     new StylelintWebpackPlugin({
       context: "src",
       configFile: path.resolve(__dirname, "../stylelint.config.js"),
@@ -118,12 +113,11 @@ module.exports = {
         ]
       },
       {
-        test: /\.s?css$/,
+        test: /\.scss$/,
         exclude: /node_modules/,
         use: ExtractTextWebpackPlugin.extract({
           fallback: "style-loader",
           use: [
-            "css-modules-typescript-loader",
             {
               loader: "css-loader",
               options: {

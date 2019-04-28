@@ -1,5 +1,4 @@
 import * as React from "react";
-import { withNamespaces, WithNamespaces } from "react-i18next";
 import { connect } from "react-redux";
 import { actionsMap as httpActions } from "../../store/actions/http";
 import { IHttpResponse } from "../../store/models";
@@ -15,7 +14,7 @@ const mapStateToProps = (state: IStoreState) => ({
 });
 
 @connect(mapStateToProps)
-class TestComponent extends React.Component<IStateProps & WithNamespaces> {
+export default class TestComponent extends React.Component<IStateProps> {
   public state = {};
 
   public async componentDidMount() {
@@ -28,9 +27,6 @@ class TestComponent extends React.Component<IStateProps & WithNamespaces> {
 
   public render() {
     // i18next国际化实例
-    const { t } = this.props;
-    return <Button>{t("test")}</Button>;
+    return <Button>test</Button>;
   }
 }
-
-export default withNamespaces()(TestComponent);
