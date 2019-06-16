@@ -1,23 +1,19 @@
 const webpack = require("webpack");
 const UglifyjsPlugin = require("uglifyjs-webpack-plugin");
 const baseConfig = require("./webpack.base.config.js");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
+const webpackMerge = require("webpack-merge");
 
-module.exports = Object.assign({}, baseConfig, {
+module.exports = webpackMerge(baseConfig, {
   mode: "production",
   devtool: false,
   plugins: [
-    ...baseConfig.plugins,
     new webpack.DefinePlugin({
-      "process.env.NODE_ENV": '"production"'
-    })
+      "process.env.NODE_ENV": JSON.stringify("production")
+    }),
+    new BundleAnalyzerPlugin()
   ],
-  externals: {
-    "@babel/polyfill": {},
-    react: "React",
-    "react-dom": "ReactDOM",
-    redux: "Redux",
-    "react-redux": "ReactRedux"
-  },
   optimization: {
     minimizer: [
       new UglifyjsPlugin({
@@ -29,9 +25,6 @@ module.exports = Object.assign({}, baseConfig, {
           }
         }
       })
-    ],
-    splitChunks: {
-      chunks: "all"
-    }
+    ]
   }
 });

@@ -7,6 +7,15 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "lib": ["dom", "scripthost", "esnext"]
-  }
+    "lib": [
+      "dom",
+      "scripthost",
+      "esnext"
+    ],
+    "outDir": "generated"
+  },
+  "exclude": [
+    "**/*.js",
+    "node_modules"
+  ]
 }

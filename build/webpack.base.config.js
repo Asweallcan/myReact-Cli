@@ -1,10 +1,10 @@
-const webpack = require("webpack");
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextWebpackPlugin = require("extract-text-webpack-plugin");
 const StylelintWebpackPlugin = require("stylelint-webpack-plugin");
 const FirendlyErrorePlugin = require("friendly-errors-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -13,48 +13,7 @@ module.exports = {
   output: {
     publicPath: "/",
     path: path.resolve(__dirname, "../dist"),
-    filename: "js/[name].js"
-  },
-  plugins: [
-    new CleanWebpackPlugin(["dist"], {
-      root: path.resolve(__dirname, "../"),
-      dry: false,
-      beforeEmit: true
-    }),
-    new FirendlyErrorePlugin(),
-    new StylelintWebpackPlugin({
-      context: "src",
-      configFile: path.resolve(__dirname, "../stylelint.config.js"),
-      files: "**/*.scss",
-      failOnError: false,
-      quiet: true,
-      fix: true
-    }),
-    new ExtractTextWebpackPlugin({
-      filename: "css/[name].css",
-      allChunks: true
-    }),
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "../src/index.html"),
-      filename: "index.html",
-      hash: true,
-      inject: true,
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeRedundantAttributes: true,
-        useShortDoctype: true,
-        removeEmptyAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        keepClosingSlash: true,
-        minifyCSS: true,
-        minifyJS: true,
-        minifyURLs: true
-      }
-    })
-  ],
-  resolve: {
-    extensions: [".js", ".json", ".jsx", ".tsx", ".ts"]
+    filename: "js/[name].bundle.js"
   },
   module: {
     rules: [
@@ -71,20 +30,12 @@ module.exports = {
       },
       {
         test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: [
-          "babel-loader",
-          {
-            loader: "eslint-loader",
-            options: {
-              configFile: path.resolve(__dirname, "../.eslintrc")
-            }
-          }
-        ]
+        include: [path.resolve(__dirname, "../src")],
+        use: ["babel-loader", "eslint-loader"]
       },
       {
         test: /\.tsx?$/,
-        exclude: /node_modules/,
+        include: [path.resolve(__dirname, "../src")],
         use: [
           {
             loader: "ts-loader",
@@ -98,40 +49,13 @@ module.exports = {
                     style: "css"
                   })
                 ]
-              }),
-              compilerOptions: {
-                module: "es2015"
-              }
-            }
-          },
-          {
-            loader: "tslint-loader",
-            options: {
-              configFile: path.resolve(__dirname, "../tslint.json")
+              })
             }
           }
         ]
       },
       {
-        test: /\.scss$/,
-        exclude: /node_modules/,
-        use: ExtractTextWebpackPlugin.extract({
-          fallback: "style-loader",
-          use: [
-            {
-              loader: "css-loader",
-              options: {
-                modules: true
-              }
-            },
-            "postcss-loader",
-            "sass-loader"
-          ]
-        })
-      },
-      {
-        test: /\.css$/,
-        exclude: /src/,
+        test: /\.s?css$/,
         use: ExtractTextWebpackPlugin.extract({
           fallback: "style-loader",
           use: [
@@ -140,7 +64,9 @@ module.exports = {
               options: {
                 importLoaders: 1
               }
-            }
+            },
+            "postcss-loader",
+            "sass-loader"
           ]
         })
       },
@@ -170,12 +96,45 @@ module.exports = {
       }
     ]
   },
-  optimization: {
-    splitChunks: {
-      chunks: "all"
-    }
+  plugins: [
+    new CleanWebpackPlugin(),
+    new FirendlyErrorePlugin(),
+    new ForkTsCheckerWebpackPlugin({
+      tslint: true,
+      tsconfig: path.resolve(__dirname, "../tsconfig.json")
+    }),
+    new StylelintWebpackPlugin({
+      context: "src",
+      files: "**/*.scss",
+      failOnError: false,
+      quiet: true,
+      fix: true
+    }),
+    new ExtractTextWebpackPlugin({
+      filename: "css/[name].css",
+      allChunks: true
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, "../src/index.html"),
+      filename: "index.html"
+    })
+  ],
+  resolve: {
+    extensions: [".js", ".json", ".jsx", ".tsx", ".ts"]
   },
-  performance: {
-    hints: false
+  optimization: {
+    runtimeChunk: false,
+    splitChunks: {
+      automaticNameDelimiter: "-",
+      cacheGroups: {
+        vendor: {
+          name: "chunk-vendor",
+          minChunks: 2,
+          priority: 5,
+          reuseExistingChunk: true,
+          test: /[/\\]node_modules[/\\]/
+        }
+      }
+    }
   }
 };

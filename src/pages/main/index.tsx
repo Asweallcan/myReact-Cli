@@ -4,13 +4,14 @@ import { actionsMap as httpActions } from "../../store/actions/http";
 import { IHttpResponse } from "../../store/models";
 import { IStoreState } from "../../store/models";
 import { Button } from "antd";
+import "./index.scss";
 
 interface IStateProps {
   getTest: IHttpResponse;
 }
 
 const mapStateToProps = (state: IStoreState) => ({
-  getTest: state.httpResponse.getTest,
+  getTest: state.httpResponse.getTest
 });
 
 @connect(mapStateToProps)
@@ -21,12 +22,15 @@ export default class TestComponent extends React.Component<IStateProps> {
     await httpActions.getTest({
       data: {},
       method: "post",
-      url: "/api/getTest",
+      url: "/api/getTest"
     });
   }
 
   public render() {
-    // i18next国际化实例
-    return <Button>test</Button>;
+    return (
+      <div className="main">
+        <Button>12123123312qweqwe3</Button>
+      </div>
+    );
   }
 }
